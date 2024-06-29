@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/avl.h"
+#include "../include/cidade.h"
+#include "../include/lista_encadeada.h"
 
 int max(int a, int b)
 {
@@ -21,56 +23,88 @@ int altura(tnode *arv)
     return ret;
 }
 
-void avl_insere(tnode **parv, titem item)
+int avl_insere(tnode **parv, titem reg, compara_ cmp)
 {
+    int result;
     if (*parv == NULL)
     {
         *parv = (tnode *)malloc(sizeof(tnode));
-        (*parv)->item = item;
+        if (*parv == NULL) {
+            return EXIT_FAILURE;
+        }
+        (*parv)->item = reg;
         (*parv)->esq = NULL;
         (*parv)->dir = NULL;
+        (*parv)->pai = NULL;
+        (*parv)->listaencadeada = NULL;
         (*parv)->h = 0;
+        result = EXIT_SUCCESS;
     }
-    else if (((*parv)->item - item) > 0)
+    else if (cmp(reg, (*parv)->item) < 0)
     {
-        avl_insere(&(*parv)->esq, item);
+        result = avl_insere(&(*parv)->esq, reg, cmp);
+        if ((*parv)->esq != NULL) {
+            (*parv)->esq->pai = *parv;
+        }
+    }
+    else if (cmp(reg, (*parv)->item) > 0)
+    {
+        result = avl_insere(&(*parv)->dir, reg, cmp);
+        if ((*parv)->dir != NULL) {
+            (*parv)->dir->pai = *parv;
+        }
     }
     else
     {
-        avl_insere(&(*parv)->dir, item);
+        encadeada_insere(&(*parv)->listaencadeada, reg.codigo_ibge);
+        result = EXIT_SUCCESS;
     }
     (*parv)->h = max(altura((*parv)->esq), altura((*parv)->dir)) + 1;
     _avl_rebalancear(parv);
+
+    return result;
 }
 
 void _rd(tnode **parv)
 {
     tnode *y = *parv;
     tnode *x = y->esq;
-    tnode *A = x->esq;
     tnode *B = x->dir;
-    tnode *C = y->dir;
 
-    y->esq = B;
     x->dir = y;
+    y->esq = B;
     *parv = x;
-    y->h = max(altura(B), altura(C)) + 1;
-    x->h = max(altura(A), altura(y)) + 1;
+
+    y->h = max(altura(y->esq), altura(y->dir)) + 1;
+    x->h = max(altura(x->esq), altura(x->dir)) + 1;
+
+    x->pai = y->pai;
+    y->pai = x;
+    if (B)
+    {
+        B->pai = y;
+    }
 }
 
 void _re(tnode **parv)
 {
     tnode *x = *parv;
     tnode *y = x->dir;
-    tnode *A = x->esq;
     tnode *B = y->esq;
-    tnode *C = y->dir;
 
-    x->dir = B;
     y->esq = x;
+    x->dir = B;
     *parv = y;
-    x->h = max(altura(A), altura(B)) + 1;
-    y->h = max(altura(x), altura(C)) + 1;
+
+    x->h = max(altura(x->esq), altura(x->dir)) + 1;
+    y->h = max(altura(y->esq), altura(y->dir)) + 1;
+
+    y->pai = x->pai;
+    x->pai = y;
+    if (B)
+    {
+        B->pai = x;
+    }
 }
 
 void _avl_rebalancear(tnode **parv)
@@ -124,21 +158,22 @@ tnode **percorre_esq(tnode **arv)
         return &(aux->esq);
     }
 }
-void avl_remove(tnode **parv, titem reg)
+
+void avl_remove(tnode **parv, titem reg, compara_ cmp)
 {
-    int cmp;
+    int cmp_result;
     tnode *aux;
     tnode **sucessor;
     if (*parv != NULL)
     {
-        cmp = (*parv)->item - reg;
-        if (cmp > 0)
+        cmp_result = cmp((*parv)->item, reg);
+        if (cmp_result > 0)
         { /* ir esquerda*/
-            avl_remove(&((*parv)->esq), reg);
+            avl_remove(&((*parv)->esq), reg, cmp);
         }
-        else if (cmp < 0)
+        else if (cmp_result < 0)
         { /*ir direita*/
-            avl_remove(&((*parv)->dir), reg);
+            avl_remove(&((*parv)->dir), reg, cmp);
         }
         else
         { /* ACHOU  */
@@ -164,7 +199,7 @@ void avl_remove(tnode **parv, titem reg)
             { /* tem dois filhos */
                 sucessor = percorre_esq(&(*parv)->dir);
                 (*parv)->item = (*sucessor)->item;
-                avl_remove(&(*parv)->dir, (*sucessor)->item);
+                avl_remove(&(*parv)->dir, (*sucessor)->item, cmp);
             }
         }
         if (*parv != NULL)
@@ -183,4 +218,34 @@ void avl_destroi(tnode *parv)
         avl_destroi(parv->dir);
         free(parv);
     }
+}
+
+tnode *minimo(tnode *node)
+{
+    while (node->esq != NULL)
+    {
+        node = node->esq;
+    }
+    return node;
+}
+
+tnode *sucessor(tnode *node)
+{
+    if (node == NULL)
+    {
+        return NULL;
+    }
+
+    if (node->dir != NULL)
+    {
+        return minimo(node->dir);
+    }
+
+    tnode *p = node->pai;
+    while (p != NULL && node == p->dir)
+    {
+        node = p;
+        p = p->pai;
+    }
+    return p;
 }
