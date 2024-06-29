@@ -1,14 +1,20 @@
 #ifndef __ENCADEADA__
 #define __ENCADEADA__
 
-typedef struct _listaencadeada {
-    int codigo_ibge;
+#include "./avl.h"
+
+typedef void *titem;
+typedef int (*compara_)(titem a, titem b);
+
+typedef struct _listaencadeada
+{
+    titem item;
     struct _listaencadeada *prox;
 } tlistaencadeada;
 
-tlistaencadeada *encadeada_procura(tlistaencadeada *head, int codigo_ibge);
-void encadeada_insere(tlistaencadeada **head, int codigo_ibge);
-void encadeada_remove(tlistaencadeada **head, int codigo_ibge);
+tlistaencadeada *encadeada_procura(tlistaencadeada *head, titem item, compara_ cmp);
+void encadeada_insere(tlistaencadeada **head, titem item);
+void encadeada_remove(tlistaencadeada **head, titem item, compara_ cmp);
 void encadeada_destroi(tlistaencadeada *head);
 
 #endif

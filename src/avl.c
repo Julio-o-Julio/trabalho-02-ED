@@ -25,11 +25,11 @@ int altura(tnode *arv)
 
 int avl_insere(tnode **parv, titem reg, compara_ cmp)
 {
-    int result;
     if (*parv == NULL)
     {
         *parv = (tnode *)malloc(sizeof(tnode));
-        if (*parv == NULL) {
+        if (*parv == NULL)
+        {
             return EXIT_FAILURE;
         }
         (*parv)->item = reg;
@@ -38,31 +38,30 @@ int avl_insere(tnode **parv, titem reg, compara_ cmp)
         (*parv)->pai = NULL;
         (*parv)->listaencadeada = NULL;
         (*parv)->h = 0;
-        result = EXIT_SUCCESS;
     }
     else if (cmp(reg, (*parv)->item) < 0)
     {
-        result = avl_insere(&(*parv)->esq, reg, cmp);
-        if ((*parv)->esq != NULL) {
-            (*parv)->esq->pai = *parv;
+        if (avl_insere(&(*parv)->esq, reg, cmp) == EXIT_FAILURE)
+        {
+            return EXIT_FAILURE;
         }
+        (*parv)->esq->pai = *parv;
     }
     else if (cmp(reg, (*parv)->item) > 0)
     {
-        result = avl_insere(&(*parv)->dir, reg, cmp);
-        if ((*parv)->dir != NULL) {
-            (*parv)->dir->pai = *parv;
+        if (avl_insere(&(*parv)->dir, reg, cmp) == EXIT_FAILURE)
+        {
+            return EXIT_FAILURE;
         }
+        (*parv)->dir->pai = *parv;
     }
     else
     {
-        encadeada_insere(&(*parv)->listaencadeada, reg.codigo_ibge);
-        result = EXIT_SUCCESS;
+        encadeada_insere(&(*parv)->listaencadeada, reg);
     }
     (*parv)->h = max(altura((*parv)->esq), altura((*parv)->dir)) + 1;
     _avl_rebalancear(parv);
-
-    return result;
+    return EXIT_SUCCESS;
 }
 
 void _rd(tnode **parv)
@@ -210,42 +209,37 @@ void avl_remove(tnode **parv, titem reg, compara_ cmp)
     }
 }
 
-void avl_destroi(tnode *parv)
-{
-    if (parv != NULL)
-    {
-        avl_destroi(parv->esq);
-        avl_destroi(parv->dir);
-        free(parv);
-    }
-}
-
-tnode *minimo(tnode *node)
-{
-    while (node->esq != NULL)
-    {
-        node = node->esq;
-    }
-    return node;
-}
-
 tnode *sucessor(tnode *node)
 {
     if (node == NULL)
     {
         return NULL;
     }
-
     if (node->dir != NULL)
     {
-        return minimo(node->dir);
+        node = node->dir;
+        while (node->esq != NULL)
+        {
+            node = node->esq;
+        }
+        return node;
     }
-
-    tnode *p = node->pai;
-    while (p != NULL && node == p->dir)
+    tnode *pai = node->pai;
+    while (pai != NULL && node == pai->dir)
     {
-        node = p;
-        p = p->pai;
+        node = pai;
+        pai = pai->pai;
     }
-    return p;
+    return pai;
+}
+
+void avl_destroi(tnode *parv)
+{
+    if (parv == NULL)
+    {
+        return;
+    }
+    avl_destroi(parv->esq);
+    avl_destroi(parv->dir);
+    free(parv);
 }

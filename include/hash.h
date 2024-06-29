@@ -1,19 +1,21 @@
 #ifndef __HASH__
 #define __HASH__
 
-typedef struct _hash {
-    int codigo_ibge;
-    struct _hash *next;
+#include <stdint.h>
+
+typedef struct _hash
+{
+    uintptr_t *table;
+    int size;
+    int max;
+    uintptr_t deleted;
+    char *(*get_key)(void *);
 } thash;
 
-typedef struct _hashtable {
-    int size;
-    thash **table;
-} thashtable;
-
-thash *hash_table_search(thashtable *ht, int codigo_ibge);
-void hash_table_insert(thashtable *ht, int codigo_ibge);
-void hash_table_delete(thashtable *ht, int codigo_ibge);
-void hash_table_free(thashtable *ht);
+uint32_t hashf(const char *str, uint32_t h);
+int hash_insere(thash *h, void *bucket);
+int hash_constroi(thash *h, int nbuckets, char *(*get_key)(void *));
+void *hash_procura(thash *h, const char *key);
+void hash_destroi(thash *h);
 
 #endif
