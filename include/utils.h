@@ -1,7 +1,7 @@
 #ifndef __UTILS__
 #define __UTILS__
 
-#include "../include/avl.h"
+#include "../include/titem.h"
 
 int compara_nome(titem a, titem b);
 int compara_latitude(titem a, titem b);

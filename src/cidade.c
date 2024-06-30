@@ -276,9 +276,9 @@ tlongitudecidade *criar_longitude_cidade(char *dados)
     return longitude_cidade;
 }
 
-tcodigoufdecidade *criar_codigo_uf_cidade(char *dados)
+tcodigoufcidade *criar_codigo_uf_cidade(char *dados)
 {
-    tcodigoufdecidade *codigo_uf_cidade = malloc(sizeof(tcodigoufdecidade));
+    tcodigoufcidade *codigo_uf_cidade = malloc(sizeof(tcodigoufcidade));
     if (codigo_uf_cidade == NULL)
     {
         printf("Erro ao alocar memória para a codigo_uf_cidade\n");

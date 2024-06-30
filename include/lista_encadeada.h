@@ -1,9 +1,8 @@
 #ifndef __ENCADEADA__
 #define __ENCADEADA__
 
-#include "./avl.h"
+#include "./titem.h"
 
-typedef void *titem;
 typedef int (*compara_)(titem a, titem b);
 
 typedef struct _listaencadeada

@@ -61,6 +61,7 @@ int avl_insere(tnode **parv, titem reg, compara_ cmp)
     }
     (*parv)->h = max(altura((*parv)->esq), altura((*parv)->dir)) + 1;
     _avl_rebalancear(parv);
+    
     return EXIT_SUCCESS;
 }
 

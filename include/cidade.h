@@ -36,7 +36,7 @@ typedef struct _codigoufcidade
 {
     int codigo_ibge;
     int codigo_uf;
-} tcodigoufdecidade;
+} tcodigoufcidade;
 
 typedef struct _dddcidade
 {
@@ -48,7 +48,7 @@ tcidade *criar_cidade(char *dados);
 tnomecidade *criar_nome_cidade(char *dados);
 tlatitudecidade *criar_latitude_cidade(char *dados);
 tlongitudecidade *criar_longitude_cidade(char *dados);
-tcodigoufdecidade *criar_codigo_uf_cidade(char *dados);
+tcodigoufcidade *criar_codigo_uf_cidade(char *dados);
 tdddcidade *criar_ddd_cidade(char *dados);
 
 #endif

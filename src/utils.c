@@ -7,53 +7,37 @@
 
 int compara_nome(titem a, titem b)
 {
-    tnomecidade *ca = (tnomecidade *)a;
-    tnomecidade *cb = (tnomecidade *)b;
-    return strcmp(ca->nome, cb->nome);
+    return strcmp(a.nomecidade.nome, b.nomecidade.nome);
 }
 
 int compara_latitude(titem a, titem b)
 {
-    tlatitudecidade *ca = (tlatitudecidade *)a;
-    tlatitudecidade *cb = (tlatitudecidade *)b;
-    if (ca->latitude < cb->latitude)
+    if (a.latitudecidade.latitude < b.latitudecidade.latitude)
         return -1;
-    if (ca->latitude > cb->latitude)
+    else if (a.latitudecidade.latitude > b.latitudecidade.latitude)
         return 1;
-    return 0;
+    else
+        return 0;
 }
 
 int compara_longitude(titem a, titem b)
 {
-    tlongitudecidade *ca = (tlongitudecidade *)a;
-    tlongitudecidade *cb = (tlongitudecidade *)b;
-    if (ca->longitude < cb->longitude)
+    if (a.longitudecidade.longitude < b.longitudecidade.longitude)
         return -1;
-    if (ca->longitude > cb->longitude)
+    else if (a.longitudecidade.longitude > b.longitudecidade.longitude)
         return 1;
-    return 0;
+    else
+        return 0;
 }
 
 int compara_codigo_uf(titem a, titem b)
 {
-    tcodigoufdecidade *ca = (tcodigoufdecidade *)a;
-    tcodigoufdecidade *cb = (tcodigoufdecidade *)b;
-    if (ca->codigo_uf < cb->codigo_uf)
-        return -1;
-    if (ca->codigo_uf > cb->codigo_uf)
-        return 1;
-    return 0;
+    return a.codigoufcidade.codigo_uf - b.codigoufcidade.codigo_uf;
 }
 
 int compara_ddd(titem a, titem b)
 {
-    tdddcidade *ca = (tdddcidade *)a;
-    tdddcidade *cb = (tdddcidade *)b;
-    if (ca->ddd < cb->ddd)
-        return -1;
-    if (ca->ddd > cb->ddd)
-        return 1;
-    return 0;
+    return a.dddcidade.ddd - b.dddcidade.ddd;
 }
 
 int isValidLine(const char linha[])

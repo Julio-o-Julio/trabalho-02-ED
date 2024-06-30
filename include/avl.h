@@ -3,8 +3,8 @@
 
 #include "./lista_encadeada.h"
 #include "./cidade.h"
+#include "./titem.h"
 
-typedef void *titem;
 typedef int (*compara_)(titem a, titem b);
 
 typedef struct _node

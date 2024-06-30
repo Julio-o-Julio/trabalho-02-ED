@@ -26,30 +26,25 @@ int hash_insere(thash *h, void *bucket)
     free(key);
 
     int pos = hash % h->max;
-    int original_pos = pos;
-    int i = 1;
 
-    while (h->table[pos] != 0)
+    /*se esta cheio*/
+    if (h->max == (h->size + 1))
     {
-        if (h->table[pos] == h->deleted)
-            break;
-
-        char *existing_key = h->get_key((void *)h->table[pos]);
-        if (strcmp(existing_key, key) == 0)
+        free(bucket);
+        return EXIT_FAILURE;
+    }
+    else
+    { /*fazer a insercao*/
+        while (h->table[pos] != 0)
         {
-            printf("Chave já existe na posição %d\n", pos);
-            free(existing_key);
-            free(bucket);
-            return EXIT_FAILURE;
+            if (h->table[pos] == h->deleted)
+                break;
+            pos = (pos + 1) % h->max;
         }
-        free(existing_key);
-
-        pos = (original_pos + i * i) % h->max;
-        i++;
+        h->table[pos] = (uintptr_t)bucket;
+        h->size += 1;
     }
 
-    h->table[pos] = (uintptr_t)bucket;
-    h->size += 1;
     return EXIT_SUCCESS;
 }
 
@@ -62,7 +57,7 @@ int hash_constroi(thash *h, int nbuckets, char *(*get_key)(void *))
     }
     h->max = nbuckets + 1;
     h->size = 0;
-    h->deleted = (uintptr_t)&(h->size);
+    h->deleted = (uintptr_t) & (h->size);
     h->get_key = get_key;
 
     return EXIT_SUCCESS;
