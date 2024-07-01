@@ -1,19 +1,19 @@
 #ifndef __ENCADEADA__
 #define __ENCADEADA__
 
-#include "./titem.h"
+#include "./cidade.h"
 
-typedef int (*compara_)(titem a, titem b);
+typedef int (*compara_)(tcidade a, tcidade b);
 
 typedef struct _listaencadeada
 {
-    titem item;
+    tcidade item;
     struct _listaencadeada *prox;
 } tlistaencadeada;
 
-tlistaencadeada *encadeada_procura(tlistaencadeada *head, titem item, compara_ cmp);
-void encadeada_insere(tlistaencadeada **head, titem item);
-void encadeada_remove(tlistaencadeada **head, titem item, compara_ cmp);
+tlistaencadeada *encadeada_procura(tlistaencadeada *head, tcidade item, compara_ cmp);
+void encadeada_insere(tlistaencadeada **head, tcidade item);
+void encadeada_remove(tlistaencadeada **head, tcidade item, compara_ cmp);
 void encadeada_destroi(tlistaencadeada *head);
 
 #endif

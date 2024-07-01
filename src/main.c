@@ -8,7 +8,6 @@
 #include "../include/hash.h"
 #include "../include/utils.h"
 #include "../include/queries.h"
-#include "../include/titem.h"
 
 int main(int argc, char *argv[])
 {
@@ -56,43 +55,42 @@ int main(int argc, char *argv[])
         if (count == 9)
         {
             tcidade *cidade = criar_cidade(dados);
-
-            titem nome_item = {TIPO_NOME, .nomecidade = criar_nome_cidade(dados)};
-            titem latitude_item = {TIPO_LATITUDE, .latitudecidade = criar_latitude_cidade(dados)};
-            titem longitude_item = {TIPO_LONGITUDE, .longitudecidade = criar_longitude_cidade(dados)};
-            titem codigo_uf_item = {TIPO_CODIGO_UF, .codigoufcidade = criar_codigo_uf_cidade(dados)};
-            titem ddd_item = {TIPO_DDD, .dddcidade = criar_ddd_cidade(dados)};
+            tcidade *nome_cidade = criar_cidade(dados);
+            tcidade *latitude_cidade = criar_cidade(dados);
+            tcidade *longitude_cidade = criar_cidade(dados);
+            tcidade *codigo_uf_cidade = criar_cidade(dados);
+            tcidade *ddd_cidade = criar_cidade(dados);
 
             if (hash_insere(&hash_cidades, cidade) == EXIT_FAILURE) {
                 printf("Erro ao inserir a cidade na hash\n");
                 return EXIT_FAILURE;
             }
 
-            if (avl_insere(&avl_nome, nome_item, compara_nome) == EXIT_FAILURE)
+            if (avl_insere(&avl_nome, *nome_cidade, compara_nome) == EXIT_FAILURE)
             {
                 printf("Erro ao inserir a cidade na AVL por nome\n");
                 return EXIT_FAILURE;
             }
 
-            if (avl_insere(&avl_latitude, latitude_item, compara_latitude) == EXIT_FAILURE)
+            if (avl_insere(&avl_latitude, *latitude_cidade, compara_latitude) == EXIT_FAILURE)
             {
                 printf("Erro ao inserir a cidade na AVL por latitude\n");
                 return EXIT_FAILURE;
             }
 
-            if (avl_insere(&avl_longitude, longitude_item, compara_longitude) == EXIT_FAILURE)
+            if (avl_insere(&avl_longitude, *longitude_cidade, compara_longitude) == EXIT_FAILURE)
             {
                 printf("Erro ao inserir a cidade na AVL por longitude\n");
                 return EXIT_FAILURE;
             }
 
-            if (avl_insere(&avl_codigo_uf, codigo_uf_item, compara_codigo_uf) == EXIT_FAILURE)
+            if (avl_insere(&avl_codigo_uf, *codigo_uf_cidade, compara_codigo_uf) == EXIT_FAILURE)
             {
                 printf("Erro ao inserir a cidade na AVL por codigo_uf\n");
                 return EXIT_FAILURE;
             }
 
-            if (avl_insere(&avl_ddd, ddd_item, compara_ddd) == EXIT_FAILURE)
+            if (avl_insere(&avl_ddd, *ddd_cidade, compara_ddd) == EXIT_FAILURE)
             {
                 printf("Erro ao inserir a cidade na AVL por ddd\n");
                 return EXIT_FAILURE;
@@ -124,15 +122,10 @@ int main(int argc, char *argv[])
             break;
         case 1:
             /* (1) cidades com latitude > 50, (2) 20 <longitude < 30 e (3) DDD == 67 */
-            titem lat_query = {TIPO_LATITUDE, .latitudecidade = { .latitude = 50 }};
-            titem long_query_min = {TIPO_LONGITUDE, .longitudecidade = { .longitude = 20 }};
-            titem long_query_max = {TIPO_LONGITUDE, .longitudecidade = { .longitude = 30 }};
-            titem ddd_query = {TIPO_DDD, .dddcidade = { .ddd = 67 }};
-            
-            busca_codigos_ibge_avl(avl_latitude, ">", lat_query, &resultados);
-            busca_codigos_ibge_avl(avl_longitude, ">", long_query_min, &resultados);
-            busca_codigos_ibge_avl(avl_longitude, "<", long_query_max, &resultados);
-            busca_codigos_ibge_avl(avl_ddd, "==", ddd_query, &resultados);
+            busca_codigos_ibge_avl(avl_latitude, "latitude", (compara_) compara_latitude, "50.0", &resultados);
+            busca_codigos_ibge_avl(avl_longitude, "longitude", (compara_) compara_longitude, "20.0", &resultados);
+            busca_codigos_ibge_avl(avl_longitude, "longitude", (compara_) compara_longitude, "30.0", &resultados);
+            busca_codigos_ibge_avl(avl_ddd, "ddd", (compara_) compara_ddd, "67", &resultados);
             break;
         default:
             printf("\n Responda um numero de 0 a 5\n\n");

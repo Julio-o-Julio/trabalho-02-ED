@@ -1,13 +1,14 @@
 #ifndef __UTILS__
 #define __UTILS__
 
-#include "../include/titem.h"
+#include "./cidade.h"
 
-int compara_nome(titem a, titem b);
-int compara_latitude(titem a, titem b);
-int compara_longitude(titem a, titem b);
-int compara_codigo_uf(titem a, titem b);
-int compara_ddd(titem a, titem b);
+int compara_nome(tcidade a, tcidade b);
+int compara_latitude(tcidade a, tcidade b);
+int compara_longitude(tcidade a, tcidade b);
+int compara_codigo_uf(tcidade a, tcidade b);
+int compara_ddd(tcidade a, tcidade b);
+
 int isValidLine(const char linha[]);
 char *get_key_cidade(void *cidade);
 

@@ -3,7 +3,7 @@
 
 #include "../include/lista_encadeada.h"
 
-tlistaencadeada *encadeada_procura(tlistaencadeada *head, titem item, compara_ cmp)
+tlistaencadeada *encadeada_procura(tlistaencadeada *head, tcidade item, compara_ cmp)
 {
     while (head != NULL)
     {
@@ -16,7 +16,7 @@ tlistaencadeada *encadeada_procura(tlistaencadeada *head, titem item, compara_ c
     return NULL;
 }
 
-void encadeada_insere(tlistaencadeada **head, titem item)
+void encadeada_insere(tlistaencadeada **head, tcidade item)
 {
     tlistaencadeada *novo = (tlistaencadeada *)malloc(sizeof(tlistaencadeada));
     if (!novo)
@@ -29,7 +29,7 @@ void encadeada_insere(tlistaencadeada **head, titem item)
     *head = novo;
 }
 
-void encadeada_remove(tlistaencadeada **head, titem item, compara_ cmp)
+void encadeada_remove(tlistaencadeada **head, tcidade item, compara_ cmp)
 {
     tlistaencadeada *temp = *head, *prev = NULL;
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "../include/avl.h"
 #include "../include/cidade.h"
 #include "../include/lista_encadeada.h"
@@ -11,19 +12,10 @@ int max(int a, int b)
 
 int altura(tnode *arv)
 {
-    int ret;
-    if (arv == NULL)
-    {
-        ret = -1;
-    }
-    else
-    {
-        ret = arv->h;
-    }
-    return ret;
+    return arv ? arv->h : -1;
 }
 
-int avl_insere(tnode **parv, titem reg, compara_ cmp)
+int avl_insere(tnode **parv, tcidade reg, compara_ cmp)
 {
     if (*parv == NULL)
     {
@@ -159,7 +151,7 @@ tnode **percorre_esq(tnode **arv)
     }
 }
 
-void avl_remove(tnode **parv, titem reg, compara_ cmp)
+void avl_remove(tnode **parv, tcidade reg, compara_ cmp)
 {
     int cmp_result;
     tnode *aux;
