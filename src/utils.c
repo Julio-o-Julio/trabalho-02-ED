@@ -61,3 +61,28 @@ char *get_key_cidade(void *cidade)
     snprintf(key, 12, "%d", c->codigo_ibge);
     return key;
 }
+
+void imprime_resultados(tlistaencadeada *resultados) {
+    if (resultados == NULL) {
+        printf("Nenhuma cidade encontrada\n");
+        return;
+    }
+
+    int i = 1;
+    tlistaencadeada *atual = resultados;
+    while (atual != NULL) {
+        printf("Cidade %d:\n", i++);
+        printf("codigo_ibge: %d\n", atual->item.codigo_ibge);
+        printf("nome: %s\n", atual->item.nome);
+        printf("latitude: %lf\n", atual->item.latitude);
+        printf("longitude: %lf\n", atual->item.longitude);
+        printf("capital: %d\n", atual->item.capital);
+        printf("codigo_uf: %d\n", atual->item.codigo_uf);
+        printf("siafi_id: %d\n", atual->item.siafi_id);
+        printf("ddd: %d\n", atual->item.ddd);
+        printf("fuso_horario: %s\n", atual->item.fuso_horario);
+        printf("\n");
+        
+        atual = atual->prox;
+    }
+}

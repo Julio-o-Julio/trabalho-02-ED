@@ -17,6 +17,9 @@ typedef struct _node
 } tnode;
 
 tnode *sucessor(tnode *node);
+tnode *avl_procura(tnode *pparv, tcidade reg, compara_ cmp);
+tnode *avl_procura_menores(tnode *parv, tcidade reg, compara_ cmp);
+tnode *avl_procura_maiores(tnode *parv, tcidade reg, compara_ cmp);
 int avl_insere(tnode **pparv, tcidade reg, compara_ cmp);
 void avl_remove(tnode **pparv, tcidade reg, compara_ cmp);
 void avl_destroi(tnode *parv);

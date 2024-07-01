@@ -111,7 +111,8 @@ int main(int argc, char *argv[])
         printf("Interface iniciada:\n\n");
 
         printf(" 0. Para sair da interface\n");
-        printf(" 1. Para retornar a resposta da tarefa 3 (combinação de  range queries)\n\n");
+        printf(" 1. Para imprimir o resultado\n");
+        printf(" 2. Para retornar a resposta da tarefa 3 (combinação de  range queries)\n\n");
         printf(" ");
         scanf("%d", &response);
 
@@ -121,11 +122,14 @@ int main(int argc, char *argv[])
             response = 0;
             break;
         case 1:
+            imprime_resultados(resultados);
+            break;
+        case 2:
             /* (1) cidades com latitude > 50, (2) 20 <longitude < 30 e (3) DDD == 67 */
-            busca_codigos_ibge_avl(avl_latitude, "latitude", (compara_) compara_latitude, "50.0", &resultados);
-            busca_codigos_ibge_avl(avl_longitude, "longitude", (compara_) compara_longitude, "20.0", &resultados);
-            busca_codigos_ibge_avl(avl_longitude, "longitude", (compara_) compara_longitude, "30.0", &resultados);
-            busca_codigos_ibge_avl(avl_ddd, "ddd", (compara_) compara_ddd, "67", &resultados);
+            busca_codigos_ibge_avl(avl_latitude, "latitude", (compara_) compara_latitude, ">", "50.0", &resultados);
+            busca_codigos_ibge_avl(avl_longitude, "longitude", (compara_) compara_longitude, ">", "20.0", &resultados);
+            busca_codigos_ibge_avl(avl_longitude, "longitude", (compara_) compara_longitude, "<", "30.0", &resultados);
+            busca_codigos_ibge_avl(avl_ddd, "ddd", (compara_) compara_ddd, "==", "67", &resultados);
             break;
         default:
             printf("\n Responda um numero de 0 a 5\n\n");

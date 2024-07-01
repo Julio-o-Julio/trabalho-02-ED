@@ -15,6 +15,64 @@ int altura(tnode *arv)
     return arv ? arv->h : -1;
 }
 
+tnode *avl_procura(tnode *parv, tcidade reg, compara_ cmp)
+{
+    if (parv == NULL || cmp(reg, parv->item) == 0)
+    {
+        return parv;
+    }
+    if (cmp(reg, parv->item) < 0)
+    {
+        return avl_procura(parv->esq, reg, cmp);
+    }
+    else
+    {
+        return avl_procura(parv->dir, reg, cmp);
+    }
+}
+
+tnode *avl_procura_menores(tnode *parv, tcidade reg, compara_ cmp)
+{
+    if (parv == NULL)
+    {
+        return NULL;
+    }
+    
+    tnode *menores = NULL;
+
+    if (cmp(reg, parv->item) <= 0)
+    {
+        menores = avl_procura_menores(parv->esq, reg, cmp);
+    }
+    else
+    {
+        menores = avl_procura_menores(parv->esq, reg, cmp);
+        menores = avl_procura_menores(parv->dir, reg, cmp);
+    }
+    return menores;
+}
+
+tnode *avl_procura_maiores(tnode *parv, tcidade reg, compara_ cmp)
+{
+    if (parv == NULL)
+    {
+        return NULL;
+    }
+
+    tnode *maiores = NULL;
+
+    if (cmp(reg, parv->item) >= 0)
+    {
+        maiores = avl_procura_maiores(parv->dir, reg, cmp);
+    }
+    else
+    {
+        maiores = avl_procura_maiores(parv->esq, reg, cmp);
+        maiores = avl_procura_maiores(parv->dir, reg, cmp);
+    }
+    return maiores;
+}
+
 int avl_insere(tnode **parv, tcidade reg, compara_ cmp)
 {
     if (*parv == NULL)
